@@ -1,3 +1,19 @@
+Date: 08/05/2020
+Version: 0.5
+
+- Python 3 Version
+- optimized with Black and Flake8 checks
+- added exclusion for links (hardcoded at the moment)
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+Date: 04/23/2020
+Version: 0.4
+
+- Python 3 Version
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
 Date: 05/11/2018
 Version: 0.3
 
