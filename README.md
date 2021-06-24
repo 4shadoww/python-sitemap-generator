@@ -13,6 +13,6 @@ The script will run under GNU/Linux operating system with Python 3 installed.
 
 ## USAGE
 - Set script to executable: chmod +x python-sitemap-generator.py
-- Run script: ./python-sitemap-generator.py https://example.com
+- Run script: ./python-sitemap-generator.py https://example.com sitemap.xml
 
 ![](screenshot.png)

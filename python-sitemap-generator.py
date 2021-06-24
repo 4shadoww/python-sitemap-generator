@@ -427,15 +427,17 @@ def ProcessChecked(obj):
         checked.append(obj)
 
 def print_usage():
-    print("usage: " + sys.argv[0] + " URL")
+    print("usage: " + sys.argv[0] + " URL OUTPUT")
 
 
 def main():
-    if len(sys.argv) < 2:
+    global filename
+    if len(sys.argv) < 3:
         print_usage()
         sys.exit(1)
 
     init_url(sys.argv[1])
+    filename = sys.argv[2]
 
     RunCrawler(InitialURL)
 
