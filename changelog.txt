@@ -1,3 +1,11 @@
+Date: 24/06/2021
+Version: 0.6
+
+- Fixes for python version 3.9.5
+- Added cli
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
 Date: 08/05/2020
 Version: 0.5
 

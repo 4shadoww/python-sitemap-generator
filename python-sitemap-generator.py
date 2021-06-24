@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+
 # Python Sitemap Generator
-# Version: 0.5
+# Version: 0.6
 
 # Updated to new Version with Python 3
 
@@ -7,9 +9,12 @@
 # Github: https://github.com/casualuser/python-sitemap-generator
 # Przemek Wiejak @ przemek@wiejak.us
 # GitHub: https://github.com/wiejakp/python-sitemap-generator
+# Noa-Emil Nissinen
+# Gitlab: https://gitlab.com/4shadoww/python-sitemap-generator
 
 import threading
 import time
+import sys
 from urllib.request import urlopen
 from urllib.request import Request
 from urllib.request import HTTPError
@@ -43,17 +48,12 @@ link_threads = []
 MaxThreads = 10
 MaxSubThreads = 10
 
-# DWFINE YOUR URL
-InitialURL = "https://google.com/"
-
-InitialURLInfo = urlparse(InitialURL)
-InitialURLLen = len(InitialURL.split("/"))
-InitialURLNetloc = InitialURLInfo.netloc
-InitialURLScheme = InitialURLInfo.scheme
-InitialURLBase = InitialURLScheme + "://" + InitialURLNetloc
-
-netloc_prefix_str = "www."
-netloc_prefix_len = len(netloc_prefix_str)
+InitialURL = None
+InitialURLInfo = None
+InitialURLLen  = None
+InitialURLNetloc  = None
+InitialURLScheme  = None
+InitialURLBase  = None
 
 run_ini = None
 run_end = None
@@ -67,8 +67,27 @@ request_headers = {
     "Connection": "keep-alive",
 }
 
-if InitialURLNetloc.startswith(netloc_prefix_str):
-    InitialURLNetloc = InitialURLNetloc[netloc_prefix_len:]
+netloc_prefix_str = "www."
+netloc_prefix_len = len(netloc_prefix_str)
+
+def init_url(url):
+    global InitialURL
+    global InitialURLInfo
+    global InitialURLLen
+    global InitialURLNetloc
+    global InitialURLScheme
+    global InitialURLBase
+
+    InitialURL = url
+
+    InitialURLInfo = urlparse(InitialURL)
+    InitialURLLen = len(InitialURL.split("/"))
+    InitialURLNetloc = InitialURLInfo.netloc
+    InitialURLScheme = InitialURLInfo.scheme
+    InitialURLBase = InitialURLScheme + "://" + InitialURLNetloc
+
+    if InitialURLNetloc.startswith(netloc_prefix_str):
+        InitialURLNetloc = InitialURLNetloc[netloc_prefix_len:]
 
 
 class RunCrawler(threading.Thread):
@@ -76,10 +95,6 @@ class RunCrawler(threading.Thread):
     run_ini = time.time()
     run_end = None
     run_dif = None
-
-    print("")
-    print(InitialURL)
-    print("")
 
     def __init__(self, url):
         threading.Thread.__init__(self)
@@ -93,11 +108,11 @@ class RunCrawler(threading.Thread):
 
         while run:
             for index, thread in enumerate(threads):
-                if thread.isAlive() is False:
+                if thread.is_alive() is False:
                     del threads[index]
 
             for index, thread in enumerate(link_threads):
-                if thread.isAlive() is False:
+                if thread.is_alive() is False:
                     del link_threads[index]
 
             for index, obj in enumerate(queue):
@@ -399,5 +414,19 @@ def ProcessChecked(obj):
     if found is False:
         checked.append(obj)
 
+def print_usage():
+    print("usage: " + sys.argv[0] + " URL")
 
-RunCrawler(InitialURL)
+
+def main():
+    if len(sys.argv) < 2:
+        print_usage()
+        sys.exit(1)
+
+    init_url(sys.argv[1])
+
+    RunCrawler(InitialURL)
+
+
+if __name__ == "__main__":
+    main()
