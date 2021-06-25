@@ -9,7 +9,7 @@ The script will run under GNU/Linux operating system with Python 3 installed.
 
 ## REQUIREMENTS
 - Python 3
-– python-beautifulsoup
+- python-beautifulsoup
 
 ## USAGE
 - Set script to executable: chmod +x python-sitemap-generator.py
