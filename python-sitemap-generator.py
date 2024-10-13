@@ -184,7 +184,7 @@ class Sitemap:
         self.urlset.attrib["xmlns"] = self.xmlns
 
     def children(self):
-        for index, obj in enumerate(checked):
+        for _, obj in enumerate(checked):
             url = etree.Element("url")
             loc = etree.Element("loc")
             lastmod = etree.Element("lastmod")
@@ -321,41 +321,48 @@ def FormatDate(datetime):
 def ParseThread(url, data):
     temp_links = data.xpath("//a")
 
-    for temp_index, temp_link in enumerate(temp_links):
+    for _, temp_link in enumerate(temp_links):
         temp_attrs = temp_link.attrib
 
-        if "href" in temp_attrs:
-            temp_url = temp_attrs.get("href")
-            temp_src = url
-            # temp_value = temp_link.text
-            temp_url = temp_attrs.get("href")
+        if "href" not in temp_attrs:
+            continue
 
-            path = JoinURL(temp_src, temp_url)
+        protocol_exclude_list = [
+            'mailto:',
+            'tel:'
+        ]
+        temp_src = url
+        temp_url = temp_attrs.get("href")
 
-            # var_dump(path)
+        if any(temp_url.startswith(protocol) for protocol in protocol_exclude_list):
+            continue
 
-            exclude_list = [
-                "/photoviewer/",
-                "/user/",
-                "/login/",
-                "/your-account/",
-                "/your-order/",
-                "/venuesdetail/",
-                "/newsfeed/",
-                "/promoters/",
-                "/events/add/",
-                "/select_seating_places/",
-                "/?category=",
-                "/feedback_promoter/",
-                "/?news_not_found",
-                "/engine/",
-                "/author/",
-                "/vendors/",
-                "/events/select_seating_places/",
-            ]
+        path = JoinURL(temp_src, temp_url)
 
-            if (path is not False) and not any(map(path.__contains__, exclude_list)):
-                ProcessURL(path, temp_src)
+        # var_dump(path)
+
+        exclude_list = [
+            "/photoviewer/",
+            "/user/",
+            "/login/",
+            "/your-account/",
+            "/your-order/",
+            "/venuesdetail/",
+            "/newsfeed/",
+            "/promoters/",
+            "/events/add/",
+            "/select_seating_places/",
+            "/?category=",
+            "/feedback_promoter/",
+            "/?news_not_found",
+            "/engine/",
+            "/author/",
+            "/vendors/",
+            "/events/select_seating_places/",
+        ]
+
+        if (path is not False) and not any(map(path.__contains__, exclude_list)):
+            ProcessURL(path, temp_src)
 
 
 def JoinURL(src, url):
